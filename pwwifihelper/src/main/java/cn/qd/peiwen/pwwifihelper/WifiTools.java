@@ -1,6 +1,6 @@
 package cn.qd.peiwen.pwwifihelper;
 
-public class WIFIDefine {
+public class WifiTools {
     public static final int SECURITY_NONE = 0;
     public static final int SECURITY_WEP = 1;
     public static final int SECURITY_PSK = 2;

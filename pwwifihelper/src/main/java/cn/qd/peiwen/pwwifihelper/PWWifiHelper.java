@@ -24,14 +24,14 @@ import java.util.List;
 import cn.qd.peiwen.pwtools.ByteUtils;
 import cn.qd.peiwen.pwtools.EmptyUtils;
 
-public class WIFIHelper {
+public class PWWifiHelper {
     private Context context;
     private WifiManager wifiManager;
     private ConnectivityManager connectivityManager;
-    private WeakReference<IWIFIListener> listener;
+    private WeakReference<IPWWifiListener> listener;
     private ConnectivityManager.NetworkCallback networkCallback;
 
-    public WIFIHelper(Context context, IWIFIListener listener) {
+    public PWWifiHelper(Context context, IPWWifiListener listener) {
         this.context = context.getApplicationContext();
         this.listener = new WeakReference<>(listener);
         this.wifiManager = (WifiManager) this.context.getSystemService(Context.WIFI_SERVICE);
@@ -67,8 +67,8 @@ public class WIFIHelper {
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 
-        filter.addAction(WIFIDefine.CONFIGURED_NETWORKS_CHANGED_ACTION);
-        filter.addAction(WIFIDefine.LINK_CONFIGURATION_CHANGED_ACTION);
+        filter.addAction(WifiTools.CONFIGURED_NETWORKS_CHANGED_ACTION);
+        filter.addAction(WifiTools.LINK_CONFIGURATION_CHANGED_ACTION);
         context.registerReceiver(this.broadcastReceiver, filter);
     }
 
@@ -251,8 +251,8 @@ public class WIFIHelper {
                     }
                     break;
                 }
-                case WIFIDefine.LINK_CONFIGURATION_CHANGED_ACTION:
-                case WIFIDefine.CONFIGURED_NETWORKS_CHANGED_ACTION:
+                case WifiTools.LINK_CONFIGURATION_CHANGED_ACTION:
+                case WifiTools.CONFIGURED_NETWORKS_CHANGED_ACTION:
                     if (EmptyUtils.isNotEmpty(listener)) {
                         listener.get().onConfiguredNetworksChanged();
                     }

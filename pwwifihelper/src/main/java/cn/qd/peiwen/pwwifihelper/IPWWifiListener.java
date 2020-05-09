@@ -3,7 +3,7 @@ package cn.qd.peiwen.pwwifihelper;
 import android.net.Network;
 import android.net.NetworkInfo;
 
-public interface IWIFIListener {
+public interface IPWWifiListener {
     void onWIFIEnabled();
     void onWIFIDisabled();
     void onAuthenticatingError();
