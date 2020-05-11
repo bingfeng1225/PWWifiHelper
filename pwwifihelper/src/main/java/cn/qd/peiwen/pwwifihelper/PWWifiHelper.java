@@ -60,6 +60,10 @@ public class PWWifiHelper {
         wifiManager.startScan();
     }
 
+    public boolean isScanAlwaysAvailable() {
+        return wifiManager.isScanAlwaysAvailable();
+    }
+
     public void registerBroadcastReceiver() {
         IntentFilter filter = new IntentFilter();
         filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
