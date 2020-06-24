@@ -1,4 +1,4 @@
-package cn.qd.peiwen.pwwifihelper;
+package cn.qd.peiwen.wifi;
 
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;

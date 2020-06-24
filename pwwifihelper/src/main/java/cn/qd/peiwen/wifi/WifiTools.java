@@ -1,4 +1,4 @@
-package cn.qd.peiwen.pwwifihelper;
+package cn.qd.peiwen.wifi;
 
 class WifiTools {
     public static final int SECURITY_NONE = 0;

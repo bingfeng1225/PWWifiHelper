@@ -1,4 +1,4 @@
-package cn.qd.peiwen.pwwifihelper;
+package cn.qd.peiwen.wifi;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
