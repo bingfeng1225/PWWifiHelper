@@ -23,5 +23,4 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.github.bingfeng1225:PWTools:e298d3e5b6'
 }

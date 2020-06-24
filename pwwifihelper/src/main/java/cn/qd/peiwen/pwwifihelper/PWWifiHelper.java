@@ -21,9 +21,6 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.List;
 
-import cn.qd.peiwen.pwtools.ByteUtils;
-import cn.qd.peiwen.pwtools.EmptyUtils;
-
 public class PWWifiHelper {
     private Context context;
     private WifiManager wifiManager;
@@ -130,7 +127,7 @@ public class PWWifiHelper {
             while (interfaces.hasMoreElements()) {
                 NetworkInterface element = interfaces.nextElement();
                 if ("wlan0".equals(element.getName())) {
-                    return ByteUtils.bytes2HexString(element.getHardwareAddress(), false, ":");
+                    return WifiTools.bytes2HexString(element.getHardwareAddress(), false, ":");
                 }
             }
             return null;
@@ -145,7 +142,7 @@ public class PWWifiHelper {
      */
     public WifiConfiguration getWifiConfigurationBySsid(String ssid) {
         final List<WifiConfiguration> configs = wifiManager.getConfiguredNetworks();
-        if (EmptyUtils.isEmpty(configs)) {
+        if (configs == null || configs.isEmpty()) {
             return null;
         }
         for (WifiConfiguration config : configs) {
@@ -173,7 +170,7 @@ public class PWWifiHelper {
 
     public void registNetworkCallback() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (EmptyUtils.isNotEmpty(this.networkCallback)) {
+            if (null != this.networkCallback) {
                 return;
             }
             this.networkCallback = new ConnectivityManager.NetworkCallback() {
@@ -181,7 +178,7 @@ public class PWWifiHelper {
                 public void onAvailable(Network network) {
                     super.onAvailable(network);
                     Log.e("WIFI", "onAvailable: " + network);
-                    if (EmptyUtils.isNotEmpty(listener)) {
+                    if (null != listener && null != listener.get()) {
                         listener.get().onNetworkAvailabled(network);
                     }
                 }
@@ -190,7 +187,7 @@ public class PWWifiHelper {
                 public void onLost(Network network) {
                     super.onLost(network);
                     Log.e("WIFI", "onLost: " + network);
-                    if (EmptyUtils.isNotEmpty(listener)) {
+                    if (null != listener && null != listener.get()) {
                         listener.get().onNetworkLost(network);
                     }
                 }
@@ -204,7 +201,7 @@ public class PWWifiHelper {
 
     public void unregistNetworkCallback() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (EmptyUtils.isNotEmpty(this.networkCallback)) {
+            if (null != this.networkCallback) {
                 this.connectivityManager.unregisterNetworkCallback(this.networkCallback);
                 this.networkCallback = null;
             }
@@ -217,21 +214,22 @@ public class PWWifiHelper {
         public void onReceive(Context context, Intent intent) {
             switch (intent.getAction()) {
                 case WifiManager.SCAN_RESULTS_AVAILABLE_ACTION:
-                    if (EmptyUtils.isNotEmpty(listener)) {
-                        listener.get().onScanResultsAvailabled();
+                        if (null != listener && null != listener.get()) {
+
+                            listener.get().onScanResultsAvailabled();
                     }
                     break;
                 case WifiManager.WIFI_STATE_CHANGED_ACTION:
                     int state = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                     switch (state) {
                         case WifiManager.WIFI_STATE_ENABLED: {
-                            if (EmptyUtils.isNotEmpty(listener)) {
+                            if (null != listener && null != listener.get()) {
                                 listener.get().onWIFIEnabled();
                             }
                             break;
                         }
                         case WifiManager.WIFI_STATE_DISABLED: {
-                            if (EmptyUtils.isNotEmpty(listener)) {
+                            if (null != listener && null != listener.get()) {
                                 listener.get().onWIFIDisabled();
                             }
                             break;
@@ -241,7 +239,7 @@ public class PWWifiHelper {
 
                 case WifiManager.NETWORK_STATE_CHANGED_ACTION: {
                     NetworkInfo info = intent.getParcelableExtra(WifiManager.EXTRA_NETWORK_INFO);
-                    if (EmptyUtils.isNotEmpty(listener)) {
+                    if (null != listener && null != listener.get()) {
                         listener.get().onNetworkStateChanged(info);
                     }
                     break;
@@ -249,7 +247,7 @@ public class PWWifiHelper {
                 case WifiManager.SUPPLICANT_STATE_CHANGED_ACTION: {
                     int error = intent.getIntExtra(WifiManager.EXTRA_SUPPLICANT_ERROR, -1);
                     if (error == WifiManager.ERROR_AUTHENTICATING) {
-                        if (EmptyUtils.isNotEmpty(listener)) {
+                        if (null != listener && null != listener.get()) {
                             listener.get().onAuthenticatingError();
                         }
                     }
@@ -257,7 +255,7 @@ public class PWWifiHelper {
                 }
                 case WifiTools.LINK_CONFIGURATION_CHANGED_ACTION:
                 case WifiTools.CONFIGURED_NETWORKS_CHANGED_ACTION:
-                    if (EmptyUtils.isNotEmpty(listener)) {
+                    if (null != listener && null != listener.get()) {
                         listener.get().onConfiguredNetworksChanged();
                     }
                     break;
