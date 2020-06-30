@@ -68,8 +68,8 @@ public class PWWifiHelper {
         filter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION);
         filter.addAction(WifiManager.SUPPLICANT_STATE_CHANGED_ACTION);
 
-        filter.addAction(WifiTools.CONFIGURED_NETWORKS_CHANGED_ACTION);
-        filter.addAction(WifiTools.LINK_CONFIGURATION_CHANGED_ACTION);
+        filter.addAction(PWWifiDefine.CONFIGURED_NETWORKS_CHANGED_ACTION);
+        filter.addAction(PWWifiDefine.LINK_CONFIGURATION_CHANGED_ACTION);
         context.registerReceiver(this.broadcastReceiver, filter);
     }
 
@@ -253,8 +253,8 @@ public class PWWifiHelper {
                     }
                     break;
                 }
-                case WifiTools.LINK_CONFIGURATION_CHANGED_ACTION:
-                case WifiTools.CONFIGURED_NETWORKS_CHANGED_ACTION:
+                case PWWifiDefine.LINK_CONFIGURATION_CHANGED_ACTION:
+                case PWWifiDefine.CONFIGURED_NETWORKS_CHANGED_ACTION:
                     if (null != listener && null != listener.get()) {
                         listener.get().onConfiguredNetworksChanged();
                     }
