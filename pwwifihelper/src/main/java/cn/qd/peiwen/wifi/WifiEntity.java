@@ -28,7 +28,7 @@ public class WifiEntity {
     }
 
     public boolean isSecured() {
-        return (WifiTools.SECURITY_NONE != this.getSecurity());
+        return (PWWifiDefine.SECURITY_NONE != this.getSecurity());
     }
 
     public String getQuotedSSID() {
@@ -37,38 +37,38 @@ public class WifiEntity {
 
     public int getSecurity() {
         if (result.capabilities.contains("WEP")) {
-            return WifiTools.SECURITY_WEP;
+            return PWWifiDefine.SECURITY_WEP;
         } else if (result.capabilities.contains("PSK")) {
-            return WifiTools.SECURITY_PSK;
+            return PWWifiDefine.SECURITY_PSK;
         } else if (result.capabilities.contains("EAP")) {
-            return WifiTools.SECURITY_EAP;
+            return PWWifiDefine.SECURITY_EAP;
         }
-        return WifiTools.SECURITY_NONE;
+        return PWWifiDefine.SECURITY_NONE;
     }
 
     private int getPSKType(ScanResult result) {
         boolean wpa = result.capabilities.contains("WPA-PSK");
         boolean wpa2 = result.capabilities.contains("WPA2-PSK");
         if (wpa2 && wpa) {
-            return WifiTools.PSK_WPA_WPA2;
+            return PWWifiDefine.PSK_WPA_WPA2;
         } else if (wpa2) {
-            return WifiTools.PSK_WPA2;
+            return PWWifiDefine.PSK_WPA2;
         } else if (wpa) {
-            return WifiTools.PSK_WPA;
+            return PWWifiDefine.PSK_WPA;
         } else {
-            return WifiTools.PSK_UNKNOWN;
+            return PWWifiDefine.PSK_UNKNOWN;
         }
     }
 
     public int getSignalLevel() {
-        if (result.level <= WifiTools.MIN_RSSI) {
+        if (result.level <= PWWifiDefine.MIN_RSSI) {
             return 0;
-        } else if (result.level >= WifiTools.MAX_RSSI) {
-            return WifiTools.RSSI_LEVELS - 1;
+        } else if (result.level >= PWWifiDefine.MAX_RSSI) {
+            return PWWifiDefine.RSSI_LEVELS - 1;
         } else {
-            float inputRange = (WifiTools.MAX_RSSI - WifiTools.MIN_RSSI);
-            float outputRange = (WifiTools.RSSI_LEVELS - 1);
-            float level = (result.level - WifiTools.MIN_RSSI) * outputRange * 1.0f / inputRange;
+            float inputRange = (PWWifiDefine.MAX_RSSI - PWWifiDefine.MIN_RSSI);
+            float outputRange = (PWWifiDefine.RSSI_LEVELS - 1);
+            float level = (result.level - PWWifiDefine.MIN_RSSI) * outputRange * 1.0f / inputRange;
             return Math.round(level);
         }
     }
@@ -78,12 +78,12 @@ public class WifiEntity {
         configuration.SSID = getQuotedSSID();
         int security = this.getSecurity();
         switch (security) {
-            case WifiTools.SECURITY_NONE:
+            case PWWifiDefine.SECURITY_NONE:
                 configuration.wepKeys[0] = "\"" + "\"";
                 configuration.wepTxKeyIndex = 0;
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                 break;
-            case WifiTools.SECURITY_WEP:
+            case PWWifiDefine.SECURITY_WEP:
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                 configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
                 configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
@@ -94,7 +94,7 @@ public class WifiEntity {
                     configuration.wepKeys[0] = '"' + password + '"';
                 }
                 break;
-            case WifiTools.SECURITY_PSK:
+            case PWWifiDefine.SECURITY_PSK:
                 configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
                 if (password.matches("[0-9A-Fa-f]{64}")) {
                     configuration.preSharedKey = password;
@@ -102,7 +102,7 @@ public class WifiEntity {
                     configuration.preSharedKey = '"' + password + '"';
                 }
                 break;
-            case WifiTools.SECURITY_EAP:
+            case PWWifiDefine.SECURITY_EAP:
                 // 暂时忽略
                 break;
         }
