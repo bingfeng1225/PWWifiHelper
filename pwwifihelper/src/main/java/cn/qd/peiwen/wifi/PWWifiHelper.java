@@ -60,7 +60,7 @@ public class PWWifiHelper {
     }
 
     public boolean isDisabled() {
-        return (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED);
+        return (wifiManager.getWifiState() == WifiManager.WIFI_STATE_DISABLED);
     }
 
     public void startScan() {
