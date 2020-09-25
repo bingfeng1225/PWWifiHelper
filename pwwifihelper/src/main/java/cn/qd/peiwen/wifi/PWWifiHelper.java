@@ -15,13 +15,13 @@ import java.util.List;
 
 import cn.qd.peiwen.wifi.listener.IPWConnectiveListener;
 import cn.qd.peiwen.wifi.listener.IPWNetworkListener;
-import cn.qd.peiwen.wifi.listener.IPWWifiSignalListener;
 import cn.qd.peiwen.wifi.listener.IPWWifiScanListener;
+import cn.qd.peiwen.wifi.listener.IPWWifiSignalListener;
 import cn.qd.peiwen.wifi.listener.IPWWifiStateListener;
 import cn.qd.peiwen.wifi.receiver.ConnectiveReceiver;
 import cn.qd.peiwen.wifi.receiver.NetworkReceiver;
-import cn.qd.peiwen.wifi.receiver.WifiSignalReceiver;
 import cn.qd.peiwen.wifi.receiver.WifiScanReceiver;
+import cn.qd.peiwen.wifi.receiver.WifiSignalReceiver;
 import cn.qd.peiwen.wifi.receiver.WifiStateReceiver;
 import cn.qd.peiwen.wifi.tools.WifiTools;
 
@@ -43,7 +43,7 @@ public class PWWifiHelper {
 
     // 打开WIFI
     public void enable() {
-        if (!isEnabled()) {
+        if (isDisabled()) {
             wifiManager.setWifiEnabled(true);
         }
     }
@@ -57,6 +57,10 @@ public class PWWifiHelper {
 
     public boolean isEnabled() {
         return wifiManager.isWifiEnabled();
+    }
+
+    public boolean isDisabled() {
+        return (wifiManager.getWifiState() == WifiManager.WIFI_STATE_ENABLED);
     }
 
     public void startScan() {
