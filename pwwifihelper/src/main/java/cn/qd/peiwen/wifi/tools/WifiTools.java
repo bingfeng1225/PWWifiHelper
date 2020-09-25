@@ -1,18 +1,39 @@
 package cn.qd.peiwen.wifi.tools;
 
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+
 import cn.qd.peiwen.wifi.PWWifiDefine;
 
 public class WifiTools {
+    private static final int MAX_RSSI = -55;
+    private static final int MIN_RSSI = -100;
+
+    public static String getMachineHardwareAddress() {
+        try {
+            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+            while (interfaces.hasMoreElements()) {
+                NetworkInterface element = interfaces.nextElement();
+                if ("wlan0".equals(element.getName())) {
+                    return WifiTools.bytes2HexString(element.getHardwareAddress(), false, ":");
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static int calculateWifiLevel(int rssi, int levels) {
-        if (rssi <= PWWifiDefine.MIN_RSSI) {
+        if (rssi <= MIN_RSSI) {
             return 0;
-        } else if (rssi >= PWWifiDefine.MAX_RSSI) {
+        } else if (rssi >= MAX_RSSI) {
             return levels - 1;
         } else {
-            float inputRange = (PWWifiDefine.MAX_RSSI - PWWifiDefine.MIN_RSSI);
+            float inputRange = (MAX_RSSI - MIN_RSSI);
             float outputRange = (levels - 1);
-            float level = (rssi - PWWifiDefine.MIN_RSSI) * outputRange * 1.0f / inputRange;
+            float level = (rssi - MIN_RSSI) * outputRange * 1.0f / inputRange;
             return Math.round(level);
         }
     }

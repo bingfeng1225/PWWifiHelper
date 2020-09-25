@@ -112,21 +112,6 @@ public class PWWifiHelper {
      *
      * @return
      */
-    public String getMachineHardwareAddress() {
-        try {
-            Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-            while (interfaces.hasMoreElements()) {
-                NetworkInterface element = interfaces.nextElement();
-                if ("wlan0".equals(element.getName())) {
-                    return WifiTools.bytes2HexString(element.getHardwareAddress(), false, ":");
-                }
-            }
-            return null;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     /**
      * 根据 NetworkId 获取 WifiConfiguration 信息
@@ -142,6 +127,47 @@ public class PWWifiHelper {
             }
         }
         return null;
+    }
+
+    public WifiConfiguration generateWifiConfiguration(String ssid, String password, int security) {
+        WifiConfiguration configuration = new WifiConfiguration();
+        configuration.allowedAuthAlgorithms.clear();
+        configuration.allowedGroupCiphers.clear();
+        configuration.allowedKeyManagement.clear();
+        configuration.allowedPairwiseCiphers.clear();
+        configuration.allowedProtocols.clear();
+        configuration.SSID = ssid;
+        switch (security) {
+            case PWWifiDefine.SECURITY_WEP:
+                configuration.preSharedKey = "\"" + password + "\"";
+                configuration.hiddenSSID = true;
+                configuration.wepTxKeyIndex = 0;
+                configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP104);
+                configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+                configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.SHARED);
+                break;
+            case PWWifiDefine.SECURITY_WPA:
+            case PWWifiDefine.SECURITY_WPA2:
+                configuration.hiddenSSID = true;
+                configuration.preSharedKey = "\"" + password + "\"";
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+                configuration.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+                configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+                configuration.allowedAuthAlgorithms.set(WifiConfiguration.AuthAlgorithm.OPEN);
+                configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+                configuration.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+                break;
+            default:
+                configuration.wepKeys[0] = "\"" + "\"";
+                configuration.wepTxKeyIndex = 0;
+                configuration.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                break;
+        }
+        return configuration;
     }
 
     /**
