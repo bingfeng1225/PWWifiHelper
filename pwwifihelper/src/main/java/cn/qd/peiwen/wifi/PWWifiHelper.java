@@ -15,22 +15,23 @@ import java.util.List;
 
 import cn.qd.peiwen.wifi.listener.IPWConnectiveListener;
 import cn.qd.peiwen.wifi.listener.IPWNetworkListener;
-import cn.qd.peiwen.wifi.listener.IPWRSSIListener;
+import cn.qd.peiwen.wifi.listener.IPWWifiSignalListener;
 import cn.qd.peiwen.wifi.listener.IPWWifiScanListener;
 import cn.qd.peiwen.wifi.listener.IPWWifiStateListener;
 import cn.qd.peiwen.wifi.receiver.ConnectiveReceiver;
 import cn.qd.peiwen.wifi.receiver.NetworkReceiver;
-import cn.qd.peiwen.wifi.receiver.RSSIReceiver;
+import cn.qd.peiwen.wifi.receiver.WifiSignalReceiver;
 import cn.qd.peiwen.wifi.receiver.WifiScanReceiver;
 import cn.qd.peiwen.wifi.receiver.WifiStateReceiver;
+import cn.qd.peiwen.wifi.tools.WifiTools;
 
 public class PWWifiHelper {
     private Context context;
     private WifiManager wifiManager;
-    private RSSIReceiver rssiReceiver;
     private NetworkReceiver networkReceiver;
     private WifiScanReceiver wifiScanReceiver;
     private WifiStateReceiver wifiStateReceiver;
+    private WifiSignalReceiver wifiSignalReceiver;
     private ConnectiveReceiver connectiveReceiver;
     private ConnectivityManager connectivityManager;
 
@@ -154,22 +155,6 @@ public class PWWifiHelper {
         return null;
     }
 
-    public void unregisterRSSIReceiver() {
-        if (this.rssiReceiver != null) {
-            context.unregisterReceiver(this.rssiReceiver);
-            this.rssiReceiver = null;
-        }
-    }
-
-    public void registerRSSIReceiver(IPWRSSIListener listener) {
-        if (this.rssiReceiver == null) {
-            IntentFilter filter = new IntentFilter();
-            filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
-            this.rssiReceiver = new RSSIReceiver(listener);
-            context.registerReceiver(this.rssiReceiver, filter);
-        }
-    }
-
     public void unregisterNetworkReceiver() {
         if (this.networkReceiver != null) {
             this.networkReceiver.unregistNetworkCallback();
@@ -218,6 +203,22 @@ public class PWWifiHelper {
             filter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
             this.wifiStateReceiver = new WifiStateReceiver(listener);
             context.registerReceiver(this.wifiStateReceiver, filter);
+        }
+    }
+
+    public void unregisterWifiSignalReceiver() {
+        if (this.wifiSignalReceiver != null) {
+            context.unregisterReceiver(this.wifiSignalReceiver);
+            this.wifiSignalReceiver = null;
+        }
+    }
+
+    public void registerWifiSignalReceiver(IPWWifiSignalListener listener) {
+        if (this.wifiSignalReceiver == null) {
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(WifiManager.RSSI_CHANGED_ACTION);
+            this.wifiSignalReceiver = new WifiSignalReceiver(listener);
+            context.registerReceiver(this.wifiSignalReceiver, filter);
         }
     }
 

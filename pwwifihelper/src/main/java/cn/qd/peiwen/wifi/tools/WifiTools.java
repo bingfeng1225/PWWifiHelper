@@ -1,6 +1,22 @@
-package cn.qd.peiwen.wifi;
+package cn.qd.peiwen.wifi.tools;
 
-class WifiTools {
+import cn.qd.peiwen.wifi.PWWifiDefine;
+
+public class WifiTools {
+
+    public static int calculateWifiLevel(int rssi, int levels) {
+        if (rssi <= PWWifiDefine.MIN_RSSI) {
+            return 0;
+        } else if (rssi >= PWWifiDefine.MAX_RSSI) {
+            return levels - 1;
+        } else {
+            float inputRange = (PWWifiDefine.MAX_RSSI - PWWifiDefine.MIN_RSSI);
+            float outputRange = (levels - 1);
+            float level = (rssi - PWWifiDefine.MIN_RSSI) * outputRange * 1.0f / inputRange;
+            return Math.round(level);
+        }
+    }
+
     public static String bytes2HexString(byte[] data) {
         return bytes2HexString(data, false);
     }

@@ -1,7 +1,9 @@
-package cn.qd.peiwen.wifi;
+package cn.qd.peiwen.demo;
 
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+
+import cn.qd.peiwen.wifi.PWWifiDefine;
 
 public class WifiEntity {
     private String password;
@@ -57,19 +59,6 @@ public class WifiEntity {
             return PWWifiDefine.PSK_WPA;
         } else {
             return PWWifiDefine.PSK_UNKNOWN;
-        }
-    }
-
-    public int getSignalLevel() {
-        if (result.level <= PWWifiDefine.MIN_RSSI) {
-            return 0;
-        } else if (result.level >= PWWifiDefine.MAX_RSSI) {
-            return PWWifiDefine.RSSI_LEVELS - 1;
-        } else {
-            float inputRange = (PWWifiDefine.MAX_RSSI - PWWifiDefine.MIN_RSSI);
-            float outputRange = (PWWifiDefine.RSSI_LEVELS - 1);
-            float level = (result.level - PWWifiDefine.MIN_RSSI) * outputRange * 1.0f / inputRange;
-            return Math.round(level);
         }
     }
 

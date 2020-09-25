@@ -13,8 +13,4 @@ public class PWWifiDefine {
 
     public static final int MAX_RSSI = -55;
     public static final int MIN_RSSI = -100;
-    public static final int RSSI_LEVELS = 4;
-
-    public static final String LINK_CONFIGURATION_CHANGED_ACTION = "android.net.wifi.LINK_CONFIGURATION_CHANGED";
-    public static final String CONFIGURED_NETWORKS_CHANGED_ACTION = "android.net.wifi.CONFIGURED_NETWORKS_CHANGE";
 }

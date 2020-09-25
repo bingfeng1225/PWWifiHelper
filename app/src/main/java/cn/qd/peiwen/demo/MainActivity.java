@@ -15,12 +15,13 @@ import android.widget.Switch;
 import cn.qd.peiwen.logger.PWLogger;
 import cn.qd.peiwen.wifi.listener.IPWConnectiveListener;
 import cn.qd.peiwen.wifi.listener.IPWNetworkListener;
-import cn.qd.peiwen.wifi.listener.IPWRSSIListener;
+import cn.qd.peiwen.wifi.listener.IPWWifiSignalListener;
 import cn.qd.peiwen.wifi.listener.IPWWifiScanListener;
 import cn.qd.peiwen.wifi.listener.IPWWifiStateListener;
 import cn.qd.peiwen.wifi.PWWifiHelper;
+import cn.qd.peiwen.wifi.tools.WifiTools;
 
-public class MainActivity extends AppCompatActivity implements IPWRSSIListener, IPWWifiStateListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, IPWWifiScanListener, IPWNetworkListener, IPWConnectiveListener {
+public class MainActivity extends AppCompatActivity implements IPWWifiSignalListener, IPWWifiStateListener, View.OnClickListener, CompoundButton.OnCheckedChangeListener, IPWWifiScanListener, IPWNetworkListener, IPWConnectiveListener {
     private PWWifiHelper helper;
     private Switch wifi_switch;
     private RecyclerView recyclerView;
@@ -30,10 +31,10 @@ public class MainActivity extends AppCompatActivity implements IPWRSSIListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.helper = new PWWifiHelper(this);
-        this.helper.registerRSSIReceiver(this);
         this.helper.registerNetworkReceiver(this);
         this.helper.registerWifiScanReceiver(this);
         this.helper.registerWifiStateReceiver(this);
+        this.helper.registerWifiSignalReceiver(this);
         this.helper.registerConnectiveReceiver(this);
 
         this.wifi_switch = findViewById(R.id.wifi_switch);
@@ -98,8 +99,9 @@ public class MainActivity extends AppCompatActivity implements IPWRSSIListener, 
     }
 
     @Override
-    public void onRSSIChanged(int rssi) {
-        PWLogger.error("onRssiChanged:" + rssi);
+    public void onWifiSignalChanged(int rssi) {
+        int level = WifiTools.calculateWifiLevel(rssi,5);
+        PWLogger.error("onWifiSignalChanged:" + level);
     }
 
     @Override
