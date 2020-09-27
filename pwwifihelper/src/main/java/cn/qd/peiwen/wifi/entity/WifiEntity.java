@@ -5,6 +5,7 @@ import android.net.wifi.ScanResult;
 import cn.qd.peiwen.wifi.PWWifiDefine;
 
 public class WifiEntity {
+    private String status;
     private ScanResult result;
 
     public WifiEntity(ScanResult result) {
@@ -25,6 +26,14 @@ public class WifiEntity {
 
     public String getQuotedSSID() {
         return "\"" + result.SSID + "\"";
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public int getSecurity() {
