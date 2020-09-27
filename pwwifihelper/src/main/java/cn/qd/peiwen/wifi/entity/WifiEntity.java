@@ -42,11 +42,11 @@ public class WifiEntity {
 
     public String getEncryption() {
         String capabilities = this.result.capabilities.toUpperCase();
-        if (capabilities.contains("WPA2") && capabilities.contains("WPA")) {
+        if (capabilities.contains("WPA2_") && capabilities.contains("WPA_")) {
             return "WPA/WPA2";
-        } else if (capabilities.contains("WPA2")) {
+        } else if (capabilities.contains("WPA2_")) {
             return "WPA2";
-        } else if (capabilities.contains("WPA")) {
+        } else if (capabilities.contains("WPA_")) {
             return "WPA";
         }
         return null;
