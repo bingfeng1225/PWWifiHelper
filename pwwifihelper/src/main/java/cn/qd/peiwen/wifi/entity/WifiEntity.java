@@ -1,15 +1,17 @@
 package cn.qd.peiwen.wifi.entity;
 
 import android.net.wifi.ScanResult;
+import android.net.wifi.SupplicantState;
 
 import cn.qd.peiwen.wifi.PWWifiDefine;
 
 public class WifiEntity {
     private ScanResult result;
 
-    private String status;
+    private String address;
     private boolean saved = false;
     private boolean active = false;
+    private SupplicantState status = null;
 
 
     public WifiEntity(ScanResult result) {
@@ -32,14 +34,6 @@ public class WifiEntity {
         return "\"" + result.SSID + "\"";
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public boolean isSaved() {
         return saved;
     }
@@ -54,6 +48,22 @@ public class WifiEntity {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public SupplicantState getStatus() {
+        return status;
+    }
+
+    public void setStatus(SupplicantState status) {
+        this.status = status;
     }
 
     public int getSecurity() {
