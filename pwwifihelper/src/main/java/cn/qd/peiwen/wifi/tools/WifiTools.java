@@ -1,13 +1,26 @@
 package cn.qd.peiwen.wifi.tools;
 
+import java.net.Inet4Address;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-
-import cn.qd.peiwen.wifi.PWWifiDefine;
 
 public class WifiTools {
     private static final int MAX_RSSI = -55;
     private static final int MIN_RSSI = -100;
+
+    public static String ipIntToString(int ip) {
+        try {
+            byte[] bytes = new byte[4];
+            bytes[0] = (byte) (0xff & ip);
+            bytes[1] = (byte) ((0xff00 & ip) >> 8);
+            bytes[2] = (byte) ((0xff0000 & ip) >> 16);
+            bytes[3] = (byte) ((0xff000000 & ip) >> 24);
+            return Inet4Address.getByAddress(bytes).getHostAddress();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public static String getMachineHardwareAddress() {
         try {
