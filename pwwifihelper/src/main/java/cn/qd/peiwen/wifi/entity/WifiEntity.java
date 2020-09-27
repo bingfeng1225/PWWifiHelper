@@ -5,8 +5,12 @@ import android.net.wifi.ScanResult;
 import cn.qd.peiwen.wifi.PWWifiDefine;
 
 public class WifiEntity {
-    private String status;
     private ScanResult result;
+
+    private String status;
+    private boolean saved = false;
+    private boolean active = false;
+
 
     public WifiEntity(ScanResult result) {
         this.result = result;
@@ -34,6 +38,22 @@ public class WifiEntity {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public boolean isSaved() {
+        return saved;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 
     public int getSecurity() {
