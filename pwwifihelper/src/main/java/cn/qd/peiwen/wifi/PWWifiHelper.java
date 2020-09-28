@@ -88,6 +88,10 @@ public class PWWifiHelper {
         return wifiManager.removeNetwork(networkId);
     }
 
+    public boolean saveConfiguration() {
+        return wifiManager.saveConfiguration();
+    }
+
     public List<ScanResult> getScanResults() {
         return this.wifiManager.getScanResults();
     }
